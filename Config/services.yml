@@ -1,10 +1,10 @@
 parameters:
-    project.dddcontext.response.handler.class: DddContext\Presentation\Response\Handler\ResponseHandler
-    project.serializer.strategy.class: DddContext\Infrastructure\Serializer\SerializerStrategy
-    project.request.strategy.class: DddContext\Presentation\Request\Generalisation\Request\SymfonyStrategy
-    project.resolver.strategy.class: DddContext\Presentation\Request\Generalisation\Resolver\ResolverStrategy
-    project.dddcontext.logger.class: DddContext\Infrastructure\Logger\Logger
-    project.validator.strategy.class: DddContext\Application\Generalisation\Validation\ValidationHandler\SymfonyValidatorStrategy
+    project.dddcontext.response.handler.class: Sfynx\DddBundle\Layer\Presentation\Response\Handler\ResponseHandler
+    project.serializer.strategy.class: Sfynx\DddBundle\Layer\Infrastructure\Serializer\SerializerStrategy
+    project.request.strategy.class: Sfynx\DddBundle\Layer\Presentation\Request\Generalisation\Request\SymfonyStrategy
+    project.resolver.strategy.class: Sfynx\DddBundle\Layer\Presentation\Request\Generalisation\Resolver\ResolverStrategy
+    project.dddcontext.logger.class: Sfynx\DddBundle\Layer\Infrastructure\Logger\Logger
+    project.validator.strategy.class: Sfynx\DddBundle\Layer\Application\Generalisation\Validation\ValidationHandler\SymfonyValidatorStrategy
 
 services:
     #
