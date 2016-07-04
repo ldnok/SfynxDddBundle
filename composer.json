@@ -1,0 +1,50 @@
+{
+  "name": "sfynx-project/tool-ddd-bundle",
+  "type": "symfony-bundle",
+  "description": "This Bundle provides abstracts and interfaces in DDD for microservice architecture",
+  "keywords": ["ddd"],
+  "homepage": "http://pigroupe.github.io/cmf-sfynx/",
+  "license": "GNU",
+
+  "authors": [
+    {
+      "name": "Etienne de Longeaux",
+      "email": "etienne.delongeaux@gmail.com"
+    },
+    {
+      "name": "laurent de nil",
+      "email": "laurent.denil@gmail.fr"
+    },
+    {
+      "name": "Sfynx Community",
+      "homepage": "https://github.com/pigroupe/SfynxDddBundle/contributors"
+    }
+  ],
+
+  "require": {
+    "symfony/framework-bundle": "~2.8"
+  },
+
+  "require-dev": {
+    "symfony/phpunit-bridge": "~2.7|~3.0",
+    "phpunit/phpunit": "*"
+  },
+
+  "suggest": {
+  },
+
+  "conflict": {
+  },
+
+  "autoload": {
+    "psr-0": { "Sfynx\\DddBundle": "" }
+  },
+
+  "target-dir": "Sfynx/DddBundle",
+
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.8-dev"
+    }
+  }
+}
