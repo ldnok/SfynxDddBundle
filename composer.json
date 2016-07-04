@@ -13,7 +13,7 @@
     },
     {
       "name": "laurent de nil",
-      "email": "laurent.denil@gmail.fr"
+      "email": "laurent.denil@gmail.com"
     },
     {
       "name": "Sfynx Community",
@@ -22,7 +22,8 @@
   ],
 
   "require": {
-    "symfony/framework-bundle": "~2.8"
+    "symfony/framework-bundle": "~2.8",
+    "jms/serializer-bundle": "*"
   },
 
   "require-dev": {
