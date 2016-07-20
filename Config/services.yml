@@ -39,7 +39,7 @@ services:
     project.resolver.strategy:
         class: %project.resolver.strategy.class%
         arguments:
-            - @project.symfony.options.resolver
+            - "@project.symfony.options.resolver"
 
     #
     # response handler
@@ -48,8 +48,8 @@ services:
         scope: prototype
         class: %project.dddcontext.response.handler.class%
         arguments:
-          - @project.serializer.strategy
-          - @project.request.strategy
+          - "@project.serializer.strategy"
+          - "@project.request.strategy"
 
     project.validator.strategy:
         class: %project.validator.strategy.class%

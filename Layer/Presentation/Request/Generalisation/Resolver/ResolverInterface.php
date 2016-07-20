@@ -36,4 +36,9 @@ interface ResolverInterface
      * @return mixed
      */
     public function resolve(array $options = array());
+
+    /**
+     * @return void
+     */
+    public function clear();
 }
