@@ -11,21 +11,21 @@ services:
     # loggers
     #
     project.dddcontext.logger:
-        class: %project.dddcontext.logger.class%
+        class: "%project.dddcontext.logger.class%"
         arguments: ["@logger"]
 
     #
     # jms serializer in strategy
     #
     project.serializer.strategy:
-        class: %project.serializer.strategy.class%
+        class: "%project.serializer.strategy.class%"
         arguments: ["@jms_serializer"]
 
     #
     # request in strategy
     #
     project.request.strategy:
-        class: %project.request.strategy.class%
+        class: "%project.request.strategy.class%"
         arguments: ["@request_stack"]
 
     #
@@ -37,7 +37,7 @@ services:
     # option resolver in strategy
     #
     project.resolver.strategy:
-        class: %project.resolver.strategy.class%
+        class: "%project.resolver.strategy.class%"
         arguments:
             - "@project.symfony.options.resolver"
 
@@ -46,7 +46,7 @@ services:
     #
     project.dddcontext.response.handler:
         scope: prototype
-        class: %project.dddcontext.response.handler.class%
+        class: "%project.dddcontext.response.handler.class%"
         arguments:
           - "@project.serializer.strategy"
           - "@project.request.strategy"
@@ -59,25 +59,25 @@ services:
     # SERVICE LOGGER for DDD LAYERS
     #
     project.dddcontext.logger.presentation:
-        class: %project.dddcontext.logger.class%
+        class: "%project.dddcontext.logger.class%"
         arguments: ["@logger"]
         tags:
             - { name: monolog.logger , channel: presentation }
 
     project.dddcontext.logger.application:
-        class: %project.dddcontext.logger.class%
+        class: "%project.dddcontext.logger.class%"
         arguments: ["@logger"]
         tags:
             - { name: monolog.logger , channel: application }
 
     project.dddcontext.logger.domain:
-        class: %project.dddcontext.logger.class%
+        class: "%project.dddcontext.logger.class%"
         arguments: ["@logger"]
         tags:
             - { name: monolog.logger , channel: domain }
 
     project.dddcontext.logger.infrastructure:
-        class: %project.dddcontext.logger.class%
+        class: "%project.dddcontext.logger.class%"
         arguments: ["@logger"]
         tags:
             - { name: monolog.logger , channel: infrastructure }
