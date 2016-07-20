@@ -2,6 +2,7 @@
 
 namespace Sfynx\DddBundle\Layer\Presentation\Request\Generalisation;
 
+use Sfynx\DddBundle\Layer\Infrastructure\Exception\PresentationException;
 use Sfynx\DddBundle\Layer\Presentation\Request\Generalisation\Request\RequestInterface;
 use Sfynx\DddBundle\Layer\Presentation\Request\Generalisation\Resolver\ResolverInterface;
 
@@ -62,9 +63,7 @@ abstract class AbstractRequest
     protected function process()
     {
         $this->setOptions();
-        if (null === $this->options) {
-            //todo: throw ... Json invalid
-        }
+
         $this->resolver->setDefaults($this->defaults);
         $this->resolver->setRequired($this->required);
         $this->resolver->setAllowedTypes($this->allowedTypes);
@@ -79,6 +78,9 @@ abstract class AbstractRequest
     {
         //get request body
         $this->options = json_decode($this->request->getContent(), true);
+        if (null === $this->options) {
+            throw new PresentationException('Invalid Json in request');
+        }
         $this->options = (null !== $this->options) ? $this->options : [];
 
 
