@@ -3,12 +3,16 @@
 namespace Sfynx\DddBundle\Layer\Application\Generalisation\Validation\ValidationHandler;
 
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Validator;
 
 class SymfonyValidatorStrategy implements ValidatorInterface
 {
+    /**
+     * @var \Symfony\Component\Validator\Validator
+     */
     protected $validator;
 
-    public function __construct($validator)
+    public function __construct(Validator $validator)
     {
         $this->validator = $validator;
     }
