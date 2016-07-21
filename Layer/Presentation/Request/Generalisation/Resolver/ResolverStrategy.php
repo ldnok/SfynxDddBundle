@@ -61,4 +61,12 @@ class ResolverStrategy implements  ResolverInterface
     {
         return $this->resolver->resolve($options);
     }
+
+    /**
+     *
+     */
+    public function clear()
+    {
+        $this->resolver->clear();
+    }
 }
