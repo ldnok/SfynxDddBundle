@@ -5,5 +5,4 @@ namespace Sfynx\DddBundle\Layer\Application\Generalisation\Validation\Validation
 interface ValidatorInterface
 {
     public function validateValue($data, array $constraints);
-    //todo: add other methods of sf ?
 }
