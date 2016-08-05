@@ -3,6 +3,7 @@
 namespace Sfynx\DddBundle\Layer\Domain\ValueObject\Generalisation;
 
 use JMS\Serializer\Annotation\Since;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 /**
  * Class AbstractSimpleVO
@@ -23,7 +24,7 @@ abstract class AbstractSimpleVO implements ValueObjectInterface
     /**
      * @param string $value The value
      */
-    public function __construct($value)
+    public function __construct($value = null)
     {
         $this->setValue($value);
     }
@@ -84,4 +85,11 @@ abstract class AbstractSimpleVO implements ValueObjectInterface
         $this->value = $newValue;
     }
 
+    public function requiresSQLCommentHint(AbstractPlatform $platform) {
+        return true;
+    }
+
+    public function canRequireSQLConversion() {
+        return true;
+    }
 }
