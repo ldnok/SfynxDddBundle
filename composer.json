@@ -23,7 +23,8 @@
 
   "require": {
     "symfony/framework-bundle": "~2.8",
-    "jms/serializer-bundle": "*"
+    "jms/serializer-bundle": "*",
+    "sfynx-project/tool-specification-bundle": "2.8.2"
   },
 
   "require-dev": {
