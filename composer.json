@@ -24,8 +24,8 @@
   "require": {
     "symfony/framework-bundle": "~2.8",
     "jms/serializer-bundle": "*",
-    "doctrine/orm":"dev-master",
-    "doctrine/mongodb-odm-bundle":"dev-master",
+    "doctrine/orm":"@dev",
+    "doctrine/mongodb-odm-bundle":"@dev",
     "doctrine/mongodb-odm":"@dev",
     "doctrine/couchdb": "@dev",
     "doctrine/couchdb-odm": "@dev",
