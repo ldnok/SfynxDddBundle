@@ -13,8 +13,10 @@ trait TraitProcessor
 
     public function executeProcess($key, $object)
     {
-        foreach ($this->process[$key] as $process) {
-            $process->update($object);
+        if(isset($this->process[$key])) {
+            foreach ($this->process[$key] as $process) {
+                $process->update($object);
+            }
         }
     }
 }
