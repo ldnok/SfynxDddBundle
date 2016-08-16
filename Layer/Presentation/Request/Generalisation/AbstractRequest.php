@@ -49,7 +49,7 @@ abstract class AbstractRequest
         $this->resolver = $resolver;
         $this->request  = $request;
 
-        $this->process($request);
+        $this->process();
     }
 
     /**

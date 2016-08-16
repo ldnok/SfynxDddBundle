@@ -12,6 +12,7 @@ interface RepositoryFactoryInterface
     const DELETEMANY_REPOSITORY = "deleteMany";
     const NEW_REPOSITORY = "new";
     const UPDATE_REPOSITORY = "update";
+    const SEARCHBY_REPOSITORY = "searchBy";
 
     public function buildRepository($action);
 }
