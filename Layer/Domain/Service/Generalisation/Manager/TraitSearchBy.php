@@ -6,10 +6,6 @@ use Sfynx\DddBundle\Layer\Domain\Service\Generalisation\Factory\RepositoryFactor
 
 trait TraitSearchBy
 {
-    /**
-     * @var AbstractAllRepository
-     */
-    protected $allRepository;
 
     /**
      * @param $start
