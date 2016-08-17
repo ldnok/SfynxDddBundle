@@ -24,7 +24,13 @@
   "require": {
     "symfony/framework-bundle": "~2.8",
     "jms/serializer-bundle": "*",
-    "sfynx-project/tool-specification-bundle": "2.8.2"
+    "doctrine/orm":"@dev",
+    "doctrine/mongodb-odm-bundle":"@dev",
+    "doctrine/mongodb-odm":"@dev",
+    "doctrine/couchdb": "@dev",
+    "doctrine/couchdb-odm": "@dev",
+    "sfynx-project/tool-specification-bundle": "2.8.2",
+    "ramsey/uuid":"~2.8"
   },
 
   "require-dev": {
