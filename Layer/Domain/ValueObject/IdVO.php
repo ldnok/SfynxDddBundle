@@ -5,7 +5,7 @@ namespace Sfynx\DddBundle\Layer\Domain\ValueObject;
 use Sfynx\DddBundle\Layer\Domain\ValueObject\Generalisation\ValueObjectInterface;
 use Sfynx\DddBundle\Layer\Domain\ValueObject\Generalisation\TraitValueObjectEquals;
 use Sfynx\DddBundle\Layer\Infrastructure\Exception\DomainException;
-use Ramsey\Uuid\Uuid as BaseUuid;
+use Rhumsaa\Uuid\Uuid as BaseUuid;
 use JMS\Serializer\Annotation\Since;
 
 class IdVO implements ValueObjectInterface
