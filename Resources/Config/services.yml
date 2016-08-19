@@ -1,0 +1,99 @@
+parameters:
+    project.dddcontext.listener.kernel.convert.profiler.class: Sfynx\DddBundle\Layer\Infrastructure\Request\ConvertToHtmlResponse
+    project.dddcontext.monolog.handler.socket.class: Sfynx\DddBundle\Layer\Infrastructure\Monolog\Handler\SocketHandler
+    project.dddcontext.response.handler.class: Sfynx\DddBundle\Layer\Presentation\Response\Handler\ResponseHandler
+    project.serializer.strategy.class: Sfynx\DddBundle\Layer\Infrastructure\Serializer\SerializerStrategy
+    project.request.strategy.class: Sfynx\DddBundle\Layer\Presentation\Request\Generalisation\Request\SymfonyStrategy
+    project.resolver.strategy.class: Sfynx\DddBundle\Layer\Presentation\Request\Generalisation\Resolver\ResolverStrategy
+    project.dddcontext.logger.class: Sfynx\DddBundle\Layer\Infrastructure\Logger\Logger
+    project.validator.strategy.class: Sfynx\DddBundle\Layer\Application\Generalisation\Validation\ValidationHandler\SymfonyValidatorStrategy
+
+services:
+    #
+    # PROFILER TO JSON RESPONSE REQUEST
+    #
+    project.dddcontext.listener.kernel.convert.profiler:
+      class: %project.dddcontext.listener.kernel.convert.profiler.class%
+      tags:
+        - { name: kernel.event_listener, event: kernel.response, priority: 1 }
+
+    #
+    # MONOLOG:::configuration of the manager monolog processor
+    #
+    project.dddcontext.monolog.handler.socket:
+        class: %project.dddcontext.monolog.handler.socket.class%
+
+    #
+    # loggers
+    #
+    project.dddcontext.logger:
+        class: "%project.dddcontext.logger.class%"
+        arguments: ["@logger"]
+
+    #
+    # jms serializer in strategy
+    #
+    project.serializer.strategy:
+        class: "%project.serializer.strategy.class%"
+        arguments: ["@jms_serializer"]
+
+    #
+    # request in strategy
+    #
+    project.request.strategy:
+        class: "%project.request.strategy.class%"
+        arguments: ["@request_stack"]
+
+    #
+    # sf2 option resolver
+    #
+    project.symfony.options.resolver:
+        class: Symfony\Component\OptionsResolver\OptionsResolver
+    #
+    # option resolver in strategy
+    #
+    project.resolver.strategy:
+        class: "%project.resolver.strategy.class%"
+        arguments:
+            - "@project.symfony.options.resolver"
+
+    #
+    # response handler
+    #
+    project.dddcontext.response.handler:
+        scope: prototype
+        class: "%project.dddcontext.response.handler.class%"
+        arguments:
+          - "@project.serializer.strategy"
+          - "@project.request.strategy"
+
+    project.validator.strategy:
+        class: %project.validator.strategy.class%
+        arguments: ["@validator"]
+
+    #
+    # SERVICE LOGGER for DDD LAYERS
+    #
+    project.dddcontext.logger.presentation:
+        class: "%project.dddcontext.logger.class%"
+        arguments: ["@logger"]
+        tags:
+            - { name: monolog.logger , channel: presentation }
+
+    project.dddcontext.logger.application:
+        class: "%project.dddcontext.logger.class%"
+        arguments: ["@logger"]
+        tags:
+            - { name: monolog.logger , channel: application }
+
+    project.dddcontext.logger.domain:
+        class: "%project.dddcontext.logger.class%"
+        arguments: ["@logger"]
+        tags:
+            - { name: monolog.logger , channel: domain }
+
+    project.dddcontext.logger.infrastructure:
+        class: "%project.dddcontext.logger.class%"
+        arguments: ["@logger"]
+        tags:
+            - { name: monolog.logger , channel: infrastructure }
