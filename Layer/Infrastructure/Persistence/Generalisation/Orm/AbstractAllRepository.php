@@ -33,6 +33,7 @@ abstract class AbstractAllRepository extends AbstractRepository
             }
             $qb->orderBy('a.'.$orderBy, $sens);
         }
+        $qb = $this->searchWithTenantId($_SERVER['HTTP_X_TENANT_ID'], $qb);
 
         return $qb->getQuery()->getResult();
     }

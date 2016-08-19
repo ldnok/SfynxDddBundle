@@ -35,7 +35,7 @@ trait TraitRepository
     {
         if (!is_null($enabled)) {
             return $this->_em
-            ->createQuery("SELECT COUNT(c) FROM {$this->_entityName} c WHERE c.enabled = '{$enabled}'")
+            ->createQuery("SELECT COUNT(c) FROM {$this->_entityName} c WHERE c.enabled = '{$enabled}' and c.tenantId = '{$_SERVER['HTTP_X_TENANT_ID']}'")
             ->getSingleScalarResult();
         } else {
             return $this->_em->createQuery("SELECT COUNT(c) FROM {$this->_entityName} c")->getSingleScalarResult();
@@ -135,6 +135,7 @@ trait TraitRepository
         if (!empty($orderby)) {
             $qb->orderBy("a.$orderby", 'ASC');
         }
+        $qb = $this->searchWithTenantId($_SERVER['HTTP_X_TENANT_ID'], $qb);
 
         $query = $qb->getQuery();
 
