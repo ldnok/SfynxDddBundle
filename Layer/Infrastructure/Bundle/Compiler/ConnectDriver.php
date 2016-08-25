@@ -26,9 +26,7 @@ class ConnectDriver extends Driver
             $file = $ymlParser->parse(file_get_contents($container->getParameter('database_multitenant_path_file')));
             // we create the tenant environment
             try {
-                $values['dbname'] = $file[$tenant_id]['dbname'];
-                $values['tbname'] = $file[$tenant_id]['tbname'];
-                $value = serialize($values);
+                $value = serialize($file['x-tenant-id'][$tenant_id]['x-fields']);
                 putenv("X_TENANT_ID_$tenant_id=$value");
             } catch (\Exception $e) {
                 throw InfrastructureException::NoTenantDefinition($tenant_id);
@@ -49,7 +47,7 @@ class ConnectDriver extends Driver
         try {
             // get dbname from multi-tenant file
             $data_tenant = unserialize(getenv("X_TENANT_ID_$tenant_id"));
-            return $data_tenant['dbname'];
+            return $data_tenant['dbname']['name'];
         } catch (\Exception $e) {
             throw InfrastructureException::NoTenantEnvParam($tenant_id);
         }
@@ -67,6 +65,25 @@ class ConnectDriver extends Driver
             return $_SERVER['HTTP_X_TENANT_ID'];
         } catch (\Exception $e) {
             throw InfrastructureException::NoIdTenantDataHeader();
+        }
+    }
+
+    /**
+     * Get the name of the database of the tenant
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public static function getTbNameByClass($class)
+    {
+        $tenant_id = self::getTenant();
+
+        try {
+            // get dbname from multi-tenant file
+            $data_tenant = unserialize(getenv("X_TENANT_ID_$tenant_id"));
+            return $data_tenant['tbname']['x-class'][$class]['name'];
+        } catch (\Exception $e) {
+            throw InfrastructureException::NoTenantEnvParam($tenant_id);
         }
     }
 }
