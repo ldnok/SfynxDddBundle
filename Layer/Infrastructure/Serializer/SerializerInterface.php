@@ -2,7 +2,6 @@
 
 namespace Sfynx\DddBundle\Layer\Infrastructure\Serializer;
 
-
 interface SerializerInterface
 {
     public function serialize($data, $format, $context = null);
