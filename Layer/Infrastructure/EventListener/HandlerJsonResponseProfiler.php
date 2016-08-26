@@ -1,10 +1,10 @@
 <?php
 
-namespace Sfynx\DddBundle\Layer\Infrastructure\Request;
+namespace Sfynx\DddBundle\Layer\Infrastructure\EventListener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-class ConvertToHtmlResponse
+class HandlerJsonResponseProfiler
 {
     public function onKernelResponse(FilterResponseEvent $event)
     {

@@ -1,6 +1,10 @@
 parameters:
     project.dddcontext.listener.kernel.exception.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerException
-    project.dddcontext.listener.kernel.response.profiler.class: Sfynx\DddBundle\Layer\Infrastructure\Request\ConvertToHtmlResponse
+    project.dddcontext.listener.kernel.response.profiler.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerJsonResponseProfiler
+    project.dddcontext.listener.kernel.request.dynamic_database_orm.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerDynamicOrmDatabase
+    project.dddcontext.listener.kernel.request.dynamic_database_odm.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerDynamicOdmDatabase
+    project.dddcontext.listener.kernel.request.dynamic_database_couchdb.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerDynamicCouchedbDatabase
+
     project.dddcontext.monolog.handler.socket.class: Sfynx\DddBundle\Layer\Infrastructure\Monolog\Handler\SocketHandler
     project.dddcontext.response.handler.class: Sfynx\DddBundle\Layer\Presentation\Response\Handler\ResponseHandler
 
@@ -13,7 +17,7 @@ parameters:
 
 services:
     #
-    # KERNEL exception Configuration
+    # KERNEL EVENT EXCEPTION
     #
     project.dddcontext.listener.kernel.exception:
         class: %project.dddcontext.listener.kernel.exception.class%
@@ -22,12 +26,21 @@ services:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
     #
-    # KERNEL response Configuration : PROFILER TO JSON RESPONSE REQUEST
+    # KERNEL EVENT RESPONSE
     #
     project.dddcontext.listener.kernel.response.profiler:
       class: %project.dddcontext.listener.kernel.response.profiler.class%
       tags:
         - { name: kernel.event_listener, event: kernel.response, priority: 1 }
+
+    #
+    # KERNEL EVENT REQUEST
+    #
+    project.dddcontext.listener.kernel.request.dynamic_database:
+        class: %project.dddcontext.listener.kernel.request.dynamic_database_orm.class%
+        arguments: [%database_type%, %database_multitenant_path_file%, @doctrine.dbal.default_connection]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
 
 
