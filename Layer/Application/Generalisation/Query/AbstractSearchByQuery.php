@@ -35,6 +35,11 @@ abstract class AbstractSearchByQuery implements QueryInterface
     protected $isAsc;
 
     /**
+     * @var
+     */
+    protected $criterias;
+
+    /**
      * @param $start
      * @param $count
      * @param $orderBy
