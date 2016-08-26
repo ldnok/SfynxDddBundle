@@ -37,4 +37,12 @@ trait TraitSimple
     {
         return $this->archived;
     }
+
+    /**
+     * @inheritdoc}
+     */
+    public function isArchived()
+    {
+        return $this->archived;
+    }
 }
