@@ -31,9 +31,17 @@ trait TraitSimple
     }
 
     /**
-     * @inheritdoc}
+     * @return bool
      */
     public function getArchived()
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isArchived()
     {
         return $this->archived;
     }

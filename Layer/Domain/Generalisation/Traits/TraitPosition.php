@@ -20,16 +20,16 @@ trait TraitPosition
     protected $position;
 
     /**
-     * @inheritdoc}
+     * @param $position
      */
     public function setPosition($position)
     {
         $this->position = $position;
-        //return $this;
+        return $this;
     }
-    
+
     /**
-     * @inheritdoc}
+     * @return mixed
      */
     public function getPosition()
     {

@@ -3,6 +3,7 @@ namespace Sfynx\DddBundle\Layer\Domain\Generalisation\Traits;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * abstract class for time attributs.
@@ -15,34 +16,34 @@ use Doctrine\ORM\Mapping as ORM;
 trait TraitDatetime
 {
     /**
-     * @var datetime $created_at
+     * @var Datetime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="create")
      */
-    protected $created_at;
+    protected $createdAt;
     
     /**
-     * @var datetime $updated_at
+     * @var DateTime $updatedAt
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      */
-    protected $updated_at;
+    protected $updatedAt;
     
     /**
-     * @var date $published_at
+     * @var DateTime $publishedAt
      *
      * @ORM\Column(name="published_at", type="datetime", nullable=true)
      */
-    protected $published_at;
+    protected $publishedAt;
     
     /**
-     * @var datetime $archive_at
+     * @var DateTime $archiveAt
      *
      * @ORM\Column(name="archive_at", type="datetime", nullable=true)
      */
-    protected $archive_at;
+    protected $archiveAt;
     
      /**
       * @ORM\PrePersist()
@@ -51,12 +52,13 @@ trait TraitDatetime
      {
          // we create the Created_at value
         if (!$this->getCreatedAt()) {
-            $this->setCreatedAt(new \DateTime());
+            $this->setCreatedAt(new DateTime());
         }
         // we modify the Updated_at value
         if (!$this->getUpdatedAt()) {
-            $this->setUpdatedAt(new \DateTime());
+            $this->setUpdatedAt(new DateTime());
         }
+         return $this;
      }
     
      /**
@@ -64,74 +66,79 @@ trait TraitDatetime
       */
      public function setUpdatedValue()
      {
-         $this->setUpdatedAt(new \DateTime());
+         $this->setUpdatedAt(new DateTime());
+         return $this;
      }
 
     /**
-     * {@inheritdoc}
+     * @param $createdAt
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
-        $this->created_at = $createdAt;
+        $this->createdAt = $createdAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getCreatedAt()
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param $updatedAt
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updated_at = $updatedAt;
+        $this->updatedAt = $updatedAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getUpdatedAt()
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param $publishedAt
+     * @return $this
      */
     public function setPublishedAt($publishedAt)
     {
-        $this->published_at = $publishedAt;
+        $this->publishedAt = $publishedAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getPublishedAt()
     {
-        return $this->published_at;
+        return $this->publishedAt;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param $archiveAt
+     * @return $this
      */
     public function setArchiveAt($archiveAt)
     {
-        $this->archive_at = $archiveAt;
+        $this->archiveAt = $archiveAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getArchiveAt()
     {
-        return $this->archive_at;
+        return $this->archiveAt;
     }
 }
