@@ -4,6 +4,7 @@ parameters:
     project.dddcontext.listener.kernel.request.dynamic_database_orm.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerDynamicOrmDatabase
     project.dddcontext.listener.kernel.request.dynamic_database_odm.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerDynamicOdmDatabase
     project.dddcontext.listener.kernel.request.dynamic_database_couchdb.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerDynamicCouchedbDatabase
+    project.dddcontext.listener.doctrine.dynamic_table.class: Sfynx\DddBundle\Layer\Infrastructure\EventListener\HandlerDynamicTable
 
     project.dddcontext.monolog.handler.socket.class: Sfynx\DddBundle\Layer\Infrastructure\Monolog\Handler\SocketHandler
     project.dddcontext.response.handler.class: Sfynx\DddBundle\Layer\Presentation\Response\Handler\ResponseHandler
@@ -42,13 +43,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
-#    #
-#    # DOCTRINE EVENT REQUEST
-#    #
-#    project.dddcontext.listener.doctrine.dynamic_table:
-#        class: %project.dddcontext.listener.doctrine.dynamic_table.class%
-#        tags:
-#            - { name: doctrine.event_listener, event: loadClassMetadata }
+    #
+    # DOCTRINE EVENT REQUEST
+    #
+    project.dddcontext.listener.doctrine.dynamic_table:
+        class: %project.dddcontext.listener.doctrine.dynamic_table.class%
+        arguments: [%database_type%, %database_multitenant_path_file%]
+        tags:
+            - { name: doctrine.event_listener, event: loadClassMetadata }
+
+
+
 
 
     #
