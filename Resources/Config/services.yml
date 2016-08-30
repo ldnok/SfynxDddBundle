@@ -42,7 +42,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
-
+#    #
+#    # DOCTRINE EVENT REQUEST
+#    #
+#    project.dddcontext.listener.doctrine.dynamic_table:
+#        class: %project.dddcontext.listener.doctrine.dynamic_table.class%
+#        tags:
+#            - { name: doctrine.event_listener, event: loadClassMetadata }
 
 
     #

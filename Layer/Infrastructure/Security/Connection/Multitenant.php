@@ -28,6 +28,7 @@ class Multitenant
      * @param string  $database_multitenant_path_file
      * @param integer $tenant_id
      *
+     * @static
      * @return string
      * @throws \Exception
      */
@@ -45,12 +46,17 @@ class Multitenant
      * @param string  $class
      * @param integer $tenant_id
      *
+     * @static
      * @return string
      * @throws \Exception
      */
     public static function getTbNameByClass($database_multitenant_path_file, $class, $tenant_id = null)
     {
         $data_tenant = self::getTenantValue($database_multitenant_path_file, $tenant_id);
+
+        if(null === $data_tenant['tbname']['x-class'][$class]['name']) {
+            return null;
+        }
 
         return $data_tenant['tbname']['x-class'][$class]['name'];
     }
@@ -61,10 +67,11 @@ class Multitenant
      * @param string  $database_multitenant_path_file
      * @param integer $tenant_id
      *
+     * @static
      * @return array
      * @throws \Exception
      */
-    protected function getTenantValue($database_multitenant_path_file, $tenant_id = null)
+    public static function getTenantValue($database_multitenant_path_file, $tenant_id = null)
     {
         if (null === $tenant_id) {
             $tenant_id = (int) self::getTenantId();

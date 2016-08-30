@@ -26,17 +26,19 @@ class HandlerDynamicOdmDatabase
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ( ('odm' !== $this->database_type)
+        if ( ('orm' !== $this->database_type)
             || (HttpKernel::MASTER_REQUEST != $event->getRequestType())
         ) {
             return;
         }
 
-        // we create value environment if not exist and get tenant id value
-        $tenant_id = Multitenant::getTenant();
-
         // we get the dbname of the tenant
+        $params = $this->connection->getParams();
         $params['dbname'] = Multitenant::getDbName($this->database_multitenant_path_file);
+
+        if (null === $params['dbname']) {
+            return;
+        }
 
         // we desconnect
         if ($this->connection->isConnected()) {
@@ -45,14 +47,18 @@ class HandlerDynamicOdmDatabase
 
         // Set up the parameters for the parent
         $this->connection->__construct(
-            $params, $this->connection->getDriver(), $this->connection->getConfiguration(),
+            $params,
+            $this->connection->getDriver(),
+            $this->connection->getConfiguration(),
             $this->connection->getEventManager()
         );
+        $this->connection->connect();
+        //print_r($params);exit;
 
         try {
             $this->connection->connect();
         } catch (\Exception $e) {
-            throw InfrastructureException::NoTenantDatabaseConnection($tenant_id);
+            throw InfrastructureException::NoTenantDatabaseConnection(Multitenant::getTenantId());
         }
     }
 }

@@ -32,16 +32,17 @@ class HandlerDynamicCouchedbDatabase
             return;
         }
 
-        // we create value environment if not exist and get tenant id value
-        $tenant_id = Multitenant::getTenant();
-
-        // we get the dbname of the tenant
+        $params = $this->connection->getParams();
         $params['dbname'] = Multitenant::getDbName($this->database_multitenant_path_file);
+
+        if (null === $params['dbname']) {
+            return;
+        }
 
         try{
             $this->connection->createDatabase($params['dbname']);
         }catch(\Exception $e){
-            throw InfrastructureException::NoTenantDatabaseConnection($tenant_id);
+            throw InfrastructureException::NoTenantDatabaseConnection(Multitenant::getTenantId());
         }
     }
 }

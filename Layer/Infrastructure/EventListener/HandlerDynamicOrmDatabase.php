@@ -39,6 +39,10 @@ class HandlerDynamicOrmDatabase
         $params = $this->connection->getParams();
         $params['dbname'] = Multitenant::getDbName($this->database_multitenant_path_file);
 
+        if (null === $params['dbname']) {
+            return;
+        }
+
         // we desconnect
         if ($this->connection->isConnected()) {
             $this->connection->close();
