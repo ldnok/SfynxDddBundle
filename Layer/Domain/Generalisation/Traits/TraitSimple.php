@@ -31,7 +31,7 @@ trait TraitSimple
     }
 
     /**
-     * @inheritdoc}
+     * @return bool
      */
     public function getArchived()
     {
@@ -39,7 +39,7 @@ trait TraitSimple
     }
 
     /**
-     * @inheritdoc}
+     * @return bool
      */
     public function isArchived()
     {

@@ -58,6 +58,7 @@ trait TraitDatetime
         if (!$this->getUpdatedAt()) {
             $this->setUpdatedAt(new DateTime());
         }
+         return $this;
      }
     
      /**
@@ -66,70 +67,75 @@ trait TraitDatetime
      public function setUpdatedValue()
      {
          $this->setUpdatedAt(new DateTime());
+         return $this;
      }
 
     /**
-     * {@inheritdoc}
+     * @param $createdAt
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param $updatedAt
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param $publishedAt
+     * @return $this
      */
     public function setPublishedAt($publishedAt)
     {
         $this->publishedAt = $publishedAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getPublishedAt()
     {
         return $this->publishedAt;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param $archiveAt
+     * @return $this
      */
     public function setArchiveAt($archiveAt)
     {
         $this->archiveAt = $archiveAt;
         return $this;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return DateTime
      */
     public function getArchiveAt()
     {

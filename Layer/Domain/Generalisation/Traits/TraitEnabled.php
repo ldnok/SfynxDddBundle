@@ -20,19 +20,19 @@ trait TraitEnabled
      * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     protected $enabled;
-    
+
     /**
-     * @inheritdoc}
+     * @param $boolean
+     * @return $this
      */
     public function setEnabled($boolean)
     {
         $this->enabled = (Boolean) $boolean;
-
         return $this;
     }
-    
+
     /**
-     * @inheritdoc}
+     * @return bool
      */
     public function getEnabled()
     {
