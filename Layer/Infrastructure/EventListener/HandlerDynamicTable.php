@@ -12,9 +12,6 @@ class HandlerDynamicTable
     protected $database_type;
     protected $database_multitenant_path_file;
 
-    /* @var Connection */
-    protected $connection;
-
     public function __construct($database_type, $database_multitenant_path_file)
     {
         $this->database_type = $database_type;
