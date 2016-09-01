@@ -15,8 +15,11 @@ class HandlerJsonResponseProfiler
         // Only send back HTML if the requestor allows it
         if (
             !($request->query->has('_profiler') && $request->query->get('_profiler'))
-            ||
-            (!$request->headers->has('Accept') || (false === strpos($request->headers->get('Accept'), 'text/html')))
+            || !$request->headers->has('Accept')
+            || (
+                (false === strpos(' '.$request->headers->get('Accept'), 'text/html'))
+                && (false === strpos(' '.$request->headers->get('Accept'), '*/*'))
+            )
         ) {
             return;
         }

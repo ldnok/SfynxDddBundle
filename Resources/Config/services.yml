@@ -48,7 +48,7 @@ services:
     #
     project.dddcontext.listener.doctrine.dynamic_table:
         class: %project.dddcontext.listener.doctrine.dynamic_table.class%
-        arguments: [%database_type%, %database_multitenant_path_file%]
+        arguments: [%database_type%, %database_multitenant_path_file%, @kernel]
         tags:
             - { name: doctrine.event_listener, event: loadClassMetadata }
 
