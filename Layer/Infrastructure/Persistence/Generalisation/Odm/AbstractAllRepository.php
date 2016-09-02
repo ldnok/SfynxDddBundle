@@ -22,6 +22,9 @@ abstract class AbstractAllRepository extends AbstractRepository
 
     protected function findAll($start, $count, $orderBy, $isAsc)
     {
+        // get database name
+        // print_r(($this->_dm->getDocumentDatabase($this->_entityName)->getName()));
+
         $qb = $this->_dm->createQueryBuilder($this->_entityName)
             ->skip($start) //skip is not recommended for big amount of data because cursor always start at the beginning
             ->limit($count);

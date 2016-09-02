@@ -29,7 +29,7 @@ class HandlerDynamicOrmDatabase
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ( ('orm' !== $this->database_type)
+        if (('orm' !== $this->database_type)
             || (HttpKernel::MASTER_REQUEST != $event->getRequestType())
         ) {
             return;
@@ -55,8 +55,6 @@ class HandlerDynamicOrmDatabase
             $this->connection->getConfiguration(),
             $this->connection->getEventManager()
         );
-        $this->connection->connect();
-        //print_r($params);exit;
 
         try {
             $this->connection->connect();

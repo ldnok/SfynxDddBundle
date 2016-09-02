@@ -15,7 +15,6 @@ use Doctrine\ODM\MongoDB\DocumentManager as MongoDBManager;
 use Doctrine\ORM\EntityManager;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\MySqlSchemaManager;
 
 class HandlerDynamicTable
 {
@@ -37,6 +36,12 @@ class HandlerDynamicTable
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
+        if (('orm' !== $this->database_type)
+            || ('couchdb' !== $this->database_type)
+        ) {
+            return;
+        }
+
         /* we get table name */
         $classMetadata = $eventArgs->getClassMetadata();
         $table = $classMetadata->table;
@@ -47,9 +52,7 @@ class HandlerDynamicTable
         }
 
         $entityManager = $eventArgs->getEntityManager();
-        if (('orm' === $this->database_type)
-            || ('odm' === $this->database_type)
-        ) {
+        if (('orm' === $this->database_type)) {
             $schemaManager = $entityManager->getConnection()->getSchemaManager();
         } elseif ('couchdb' === $this->database_type) {
             $schemaManager = $entityManager->getSchemaManager();
@@ -61,8 +64,8 @@ class HandlerDynamicTable
             $application = new Application($this->kernel);
             $application->setAutoExit(false);
             $application->run(new ArrayInput(array(
-                'command' => 'doctrine:cache:clear-metadata',
-                '--env='.$this->kernel->getEnvironment() => true
+                    'command' => 'doctrine:cache:clear-metadata',
+                    '--env='.$this->kernel->getEnvironment() => true
             )));
         }
         /* we change the table name */

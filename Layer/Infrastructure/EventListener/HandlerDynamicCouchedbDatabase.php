@@ -26,13 +26,13 @@ class HandlerDynamicCouchedbDatabase
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ( ('couchdb' !== $this->database_type)
+        if (('couchdb' !== $this->database_type)
             || (HttpKernel::MASTER_REQUEST != $event->getRequestType())
         ) {
             return;
         }
 
-        $params = $this->connection->getParams();
+        // we get the dbname of the tenant
         $params['dbname'] = Multitenant::getDbName($this->database_multitenant_path_file);
 
         if (null === $params['dbname']) {
@@ -40,8 +40,14 @@ class HandlerDynamicCouchedbDatabase
         }
 
         try{
-            $this->connection->createDatabase($params['dbname']);
-        }catch(\Exception $e){
+            try {
+                $this->connection->createDatabase($params['dbname']);
+            } catch (\Exception $e){}
+            $this->connection->__construct(
+                $this->connection->getHttpClient(),
+                $params['dbname']
+            );
+        } catch (\Exception $e){
             throw InfrastructureException::NoTenantDatabaseConnection(Multitenant::getTenantId());
         }
     }

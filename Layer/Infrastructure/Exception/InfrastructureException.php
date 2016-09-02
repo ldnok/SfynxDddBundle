@@ -55,6 +55,6 @@ class InfrastructureException extends \Exception
      */
     public static function NoTenantDatabaseConnection($id)
     {
-        return new self(sprintf('The connection of th database associated with the tenant %s is not done.', $id));
+        return new self(sprintf('The connection of the database associated with the tenant %s is not done.', $id));
     }
 }
