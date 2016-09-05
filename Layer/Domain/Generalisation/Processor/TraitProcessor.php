@@ -13,6 +13,9 @@ trait TraitProcessor
 
     public function executeProcess($key, $object)
     {
+        if(!array_key_exists($key,$this->process)) {
+            throw new \Exception("Key ".$key." do not exists in process list");
+        }
         foreach ($this->process[$key] as $process) {
             $process->update($object);
         }
