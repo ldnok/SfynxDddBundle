@@ -45,6 +45,20 @@ class InfrastructureException extends \Exception
     }
 
     /**
+     * Returns the <No Tenant Definition File> Exception.
+     *
+     * @param $id integer
+     *
+     * @return \Exception
+     * @access public
+     * @static
+     */
+    public static function NoTenantDefinitionFile($id)
+    {
+        return new self(sprintf('The tenant file is not defined for id %s', $id));
+    }
+
+    /**
      * Returns the <No Tenant database connection> Exception.
      *
      * @param $id integer

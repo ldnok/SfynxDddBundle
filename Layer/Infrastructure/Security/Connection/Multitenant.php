@@ -71,19 +71,32 @@ class Multitenant
      * @return array
      * @throws \Exception
      */
-    public static function getTenantValue($database_multitenant_path_file, $tenant_id = null)
+    public static function getTenantValue(boolean $bUseDb, string $sTenantCacheDir, string $sTenantFilePath, int $sTenantId = null) : array
     {
-        if (null === $tenant_id) {
-            $tenant_id = (int) self::getTenantId();
+        if (null === $sTenantId) {
+            $sTenantId = (int) self::getTenantId();
+        }
+        
+        $jsonFile = sprintf('%s%s%s', $sTenantCacheDir, '/', $sTenantId);
+        if (file_exists($jsonFile)) {
+            $data = json_decode(file_get_contents(realpath($sTenantFilePath)), true);
+            $data = $data['x-fields'];
+        } elseif ($bUseDb && false) {//todo
+            $data = []; //todo
+            //load in db
+            //+ créer le fichier json
+            file_put_contents($jsonFile, json_encode($data));
+        } elseif (file_exists($sTenantFilePath)) {
+            $data = json_decode(file_get_contents(realpath($sTenantFilePath)), true);
+            $data = $data['x-tenant-id'][$sTenantId]['x-fields'];
+        } else {
+            throw InfrastructureException::NoTenantDefinitionFile($sTenantId);
         }
 
-        $ymlParser = new Parser();
-        $data = $ymlParser->parse(file_get_contents(realpath($database_multitenant_path_file)));
-
-        if (null === $data['x-tenant-id'][$tenant_id]) {
-            throw InfrastructureException::NoTenantDefinition($tenant_id);
+        if (null === $data['x-tenant-id'][$sTenantId]) {
+            throw InfrastructureException::NoTenantDefinition($sTenantId);
         }
 
-        return $data['x-tenant-id'][$tenant_id]['x-fields'];
+        return $data;
     }
 }

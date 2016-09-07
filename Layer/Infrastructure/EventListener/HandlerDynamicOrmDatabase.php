@@ -43,7 +43,7 @@ class HandlerDynamicOrmDatabase
             return;
         }
 
-        // we desconnect
+        // we disconnect
         if ($this->connection->isConnected()) {
             $this->connection->close();
         }
