@@ -37,7 +37,7 @@ class HandlerDynamicTable
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
         if (('orm' !== $this->database_type)
-            || ('couchdb' !== $this->database_type)
+            && ('couchdb' !== $this->database_type)
         ) {
             return;
         }
