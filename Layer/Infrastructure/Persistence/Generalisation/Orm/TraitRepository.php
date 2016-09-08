@@ -135,7 +135,7 @@ trait TraitRepository
         if (!empty($orderby)) {
             $qb->orderBy("a.$orderby", 'ASC');
         }
-        $qb = $this->searchWithTenantId($_SERVER['HTTP_X_TENANT_ID'], $qb);
+        $qb = $this->searchWithTenantId($_SERVER[MultitenantDefinition::HEADER_TENANT_ID_KEY], $qb);
 
         $query = $qb->getQuery();
 

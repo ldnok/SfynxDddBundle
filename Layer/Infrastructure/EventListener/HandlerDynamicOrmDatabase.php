@@ -2,6 +2,7 @@
 
 namespace Sfynx\DddBundle\Layer\Infrastructure\EventListener;
 
+use Sfynx\DddBundle\Layer\Domain\Service\Generalisation\Manager\ManagerInterface;
 use Sfynx\DddBundle\Layer\Infrastructure\Security\Connection\Multitenant;
 use Sfynx\DddBundle\Layer\Infrastructure\Exception\InfrastructureException;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -10,21 +11,26 @@ use Doctrine\DBAL\Connection;
 
 class HandlerDynamicOrmDatabase
 {
-    protected $database_type;
-    protected $database_multitenant_path_file;
+    protected $sDatabaseType;
+    protected $bUseDb;
+    protected $oManager;
+    protected $sTenantCacheDir;
+    protected $sDefaultTenantFilePath;
 
     /* @var Connection */
-    protected $connection;
+    protected $oConnection;
 
-    public function __construct($database_type, $database_multitenant_path_file, Connection $connection)
+    public function __construct(ManagerInterface $oManager, $sDatabaseType, $bUseDb, $sTenantCacheDir, $sDefaultTenantFilePath, Connection $oConnection)
     {
-        $this->database_type = $database_type;
-        $this->database_multitenant_path_file = $database_multitenant_path_file;
-        $this->connection = $connection;
+        $this->oManager = $oManager;
+        $this->sDatabaseType = $sDatabaseType;
+        $this->bUseDb = $bUseDb;
+        $this->sTenantCacheDir = $sTenantCacheDir;
+        $this->sDefaultTenantFilePath = $sDefaultTenantFilePath;
+        $this->oConnection = $oConnection;
     }
 
     /**
-     *
      * @throws \Exception
      */
     public function onKernelRequest(GetResponseEvent $event)
@@ -37,7 +43,7 @@ class HandlerDynamicOrmDatabase
 
         // we get the dbname of the tenant
         $params = $this->connection->getParams();
-        $params['dbname'] = Multitenant::getDbName($this->database_multitenant_path_file);
+        $params['dbname'] = Multitenant::getDbName($this->oManager, $this->bUseDb, $this->sTenantCacheDir, $this->sDefaultTenantFilePath);
 
         if (null === $params['dbname']) {
             return;

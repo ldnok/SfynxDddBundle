@@ -32,7 +32,7 @@ abstract class AbstractGetByIdsRepository extends AbstractRepository
             ->from($this->_entityName, 'a')
             ->where('a.id IN (?1)')
             ->setParameter(1, $entityIds);
-        $qb = $this->searchWithTenantId($_SERVER['HTTP_X_TENANT_ID'], $qb);
+        $qb = $this->searchWithTenantId($_SERVER[MultitenantDefinition::HEADER_TENANT_ID_KEY], $qb);
 
         return $qb->getQuery()->getResult();
     }

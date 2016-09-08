@@ -23,7 +23,7 @@ abstract class AbstractDeleteRepository extends AbstractRepository
         $qb->delete($this->_entityName, 'a')
             ->andWhere('a.id = ?1')
             ->setParameter(1, $entityId);
-        $qb = $this->searchWithTenantId($_SERVER['HTTP_X_TENANT_ID'], $qb);
+        $qb = $this->searchWithTenantId($_SERVER[MultitenantDefinition::HEADER_TENANT_ID_KEY], $qb);
         $result = $qb->getQuery()->execute();
 
         return $result;

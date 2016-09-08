@@ -3,6 +3,7 @@
 namespace Sfynx\DddBundle\Layer\Infrastructure\Persistence\Generalisation\Orm;
 
 use Sfynx\DddBundle\Layer\Infrastructure\Exception\PersistenceException;
+use Sfynx\DddBundle\Layer\Infrastructure\Security\Connection\MultitenantDefinition;
 
 /**
  * Class AbstractDeleteManyRepository
@@ -28,7 +29,7 @@ abstract class AbstractDeleteManyRepository extends AbstractRepository
         $qb->delete($this->_entityName, 'a')
             ->andWhere('a.id IN (?1)')
             ->setParameter(1, $entityIds);
-        $qb = $this->searchWithTenantId($_SERVER['HTTP_X_TENANT_ID'], $qb);
+        $qb = $this->searchWithTenantId($_SERVER[MultitenantDefinition::HEADER_TENANT_ID_KEY], $qb);
 
         return $qb->getQuery()->execute();
     }

@@ -2,8 +2,8 @@
 
 namespace Sfynx\DddBundle\Layer\Infrastructure\Security\Connection;
 
+use Sfynx\DddBundle\Layer\Domain\Service\Generalisation\Manager\ManagerInterface;
 use Sfynx\DddBundle\Layer\Infrastructure\Exception\InfrastructureException;
-use Symfony\Component\Yaml\Parser;
 
 class Multitenant
 {
@@ -15,11 +15,9 @@ class Multitenant
      */
     public static function getTenantId()
     {
-        if (null === $_SERVER['HTTP_X_TENANT_ID']) {
-            throw InfrastructureException::NoDataHeader("id tenant X-TENANT-ID");
-        }
+        MultitenantDefinition::verifyHeader($_SERVER);
 
-        return $_SERVER['HTTP_X_TENANT_ID'];
+        return $_SERVER[MultitenantDefinition::HEADER_TENANT_ID_KEY];
     }
 
     /**
@@ -32,11 +30,11 @@ class Multitenant
      * @return string
      * @throws \Exception
      */
-    public static function getDbName($database_multitenant_path_file, $tenant_id = null)
+    public static function getDbName(ManagerInterface $oManager, boolean $bUseDb, string $sTenantCacheDir, string $sDefaultTenantFilePath, $iTenantId = null)
     {
-        $data_tenant = self::getTenantValue($database_multitenant_path_file, $tenant_id);
+        $aData = self::getTenantValue($oManager, $bUseDb, $sTenantCacheDir, $sDefaultTenantFilePath, $iTenantId);
 
-        return $data_tenant['dbname']['name'];
+        return $aData['dbname']['name'];
     }
 
     /**
@@ -50,53 +48,64 @@ class Multitenant
      * @return string
      * @throws \Exception
      */
-    public static function getTbNameByClass($database_multitenant_path_file, $class, $tenant_id = null)
+    public static function getTbNameByClass(ManagerInterface $oManager, boolean $bUseDb, string $sTenantCacheDir, string $sDefaultTenantFilePath, $class, $iTenantId = null)
     {
-        $data_tenant = self::getTenantValue($database_multitenant_path_file, $tenant_id);
+        $aData = self::getTenantValue($oManager, $bUseDb, $sTenantCacheDir, $sDefaultTenantFilePath, $iTenantId);
 
-        if(null === $data_tenant['tbname']['x-class'][$class]['name']) {
+        if(null === $aData['tbname'][MultitenantDefinition::ENTRY_CLASS_KEY][$class]['name']) {
             return null;
         }
 
-        return $data_tenant['tbname']['x-class'][$class]['name'];
+        return $aData['tbname'][MultitenantDefinition::ENTRY_CLASS_KEY][$class]['name'];
     }
 
-    /**
-     * Get the name of the database of the tenant
-     *
-     * @param string  $database_multitenant_path_file
-     * @param integer $tenant_id
-     *
-     * @static
-     * @return array
-     * @throws \Exception
-     */
-    public static function getTenantValue(boolean $bUseDb, string $sTenantCacheDir, string $sTenantFilePath, int $sTenantId = null) : array
+    public static function getTenantValue(ManagerInterface $oManager, boolean $bUseDb, string $sTenantCacheDir, string $sDefaultTenantFilePath, int $iTenantId = null) : array
     {
-        if (null === $sTenantId) {
-            $sTenantId = (int) self::getTenantId();
+        if (null === $iTenantId) {
+            $iTenantId = (int) self::getTenantId();
         }
-        
-        $jsonFile = sprintf('%s%s%s', $sTenantCacheDir, '/', $sTenantId);
-        if (file_exists($jsonFile)) {
-            $data = json_decode(file_get_contents(realpath($sTenantFilePath)), true);
-            $data = $data['x-fields'];
-        } elseif ($bUseDb && false) {//todo
-            $data = []; //todo
-            //load in db
-            //+ créer le fichier json
-            file_put_contents($jsonFile, json_encode($data));
-        } elseif (file_exists($sTenantFilePath)) {
-            $data = json_decode(file_get_contents(realpath($sTenantFilePath)), true);
-            $data = $data['x-tenant-id'][$sTenantId]['x-fields'];
+        $aData = self::loadTenantData($oManager, $bUseDb, $sTenantCacheDir, $sDefaultTenantFilePath, $iTenantId);
+
+        return $aData[MultitenantDefinition::ENTRY_FIELDS_KEY];
+    }
+
+    public static function loadTenantData(ManagerInterface $oManager, boolean $bUseDb, string $sTenantCacheDir, string $sDefaultTenantFilePath, int $iTenantId) : array
+    {
+        $sCacheFilePath = sprintf('%s%s%s.json', $sTenantCacheDir, '/', $iTenantId);
+        $aData = null;
+        $bWriteCache = false;
+        //1. look in cache
+        if (file_exists($sCacheFilePath)) {
+            $aData = json_decode(file_get_contents(realpath($sCacheFilePath)), true);
         } else {
-            throw InfrastructureException::NoTenantDefinitionFile($sTenantId);
+            $bWriteCache = true;
+        }
+        //2. look in db if $bUseDb is true
+        if (empty($aData) && $bUseDb) {
+            $aData = json_decode($oManager->find($iTenantId), true);
+        }
+        //3. try in the default tenant file
+        $bExtractIdFromList = false;
+        if (empty($aData) && file_exists($sDefaultTenantFilePath)) {
+            $bExtractIdFromList = true;
+            $aData = json_decode(file_get_contents(realpath($sDefaultTenantFilePath)), true);
+        }
+        //no tenant file or data found for this id
+        if (empty($aData)) {
+            throw InfrastructureException::NoTenantDefinitionFile($iTenantId);
+        }
+        //$aData comes from the default tenant file so we need to extract
+        if ($bExtractIdFromList) {
+            if (empty($aData[MultitenantDefinition::LIST_TENANTS_ID_KEY][$iTenantId])) {
+                throw InfrastructureException::NoTenantDefinition($iTenantId);
+            }
+            $aData = $aData[MultitenantDefinition::LIST_TENANTS_ID_KEY][$iTenantId];
+        }
+        //the cache must be set
+        if ($bWriteCache) {
+            file_put_contents($sCacheFilePath, json_encode($aData));//todo replace with sfynx-cache?
         }
 
-        if (null === $data['x-tenant-id'][$sTenantId]) {
-            throw InfrastructureException::NoTenantDefinition($sTenantId);
-        }
-
-        return $data;
+        return $aData;
     }
 }
