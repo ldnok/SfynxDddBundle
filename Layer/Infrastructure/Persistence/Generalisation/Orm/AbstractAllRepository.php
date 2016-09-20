@@ -14,25 +14,16 @@ abstract class AbstractAllRepository extends AbstractRepository
 {
     public function execute(\stdClass $object)
     {
-        return $this->findAll($object->start, $object->count, $object->orderBy, $object->isAsc);
+        return $this->findAll($object->start, $object->count);
     }
 
-    protected function findAll($start, $count, $orderBy, $isAsc)
+    protected function findAll($start, $count)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('a')
             ->from($this->_entityName, 'a')
             ->setFirstResult($start)
             ->setMaxResults($count);
-
-        if (isset($orderBy)) {
-            if ($isAsc) {
-                $sens = 'ASC';
-            } else {
-                $sens = 'DESC';
-            }
-            $qb->orderBy('a.'.$orderBy, $sens);
-        }
 
         return $qb->getQuery()->getResult();
     }
