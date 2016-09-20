@@ -14,17 +14,13 @@ trait TraitGetAll
     /**
      * @param $start
      * @param $count
-     * @param $orderBy
-     * @param $isAsc
      * @return array
      */
-    public function all($start, $count, $orderBy, $isAsc)
+    public function all($start, $count)
     {
         $object = new \stdClass();
         $object->start = $start;
         $object->count = $count;
-        $object->orderBy = $orderBy;
-        $object->isAsc = $isAsc;
 
         return $this->factory->buildRepository(RepositoryFactoryInterface::ALL_REPOSITORY)->execute($object);
     }

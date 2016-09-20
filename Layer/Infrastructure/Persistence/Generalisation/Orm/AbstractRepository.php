@@ -43,11 +43,5 @@ abstract class AbstractRepository
         $this->_entityName = $entityName;
     }
 
-    public function searchWithTenantId($tenantId, $qb, $alias = 'a')
-    {
-        return $qb->andWhere("$alias.tenantId = :tenantId")
-                    ->setParameter('tenantId', $tenantId);
-    }
-
     abstract protected function initEntityName();
 }

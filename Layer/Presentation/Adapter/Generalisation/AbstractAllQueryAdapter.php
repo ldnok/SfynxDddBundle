@@ -14,8 +14,6 @@ abstract class AbstractAllQueryAdapter
         $start = empty($parameters['start']) ? null : $parameters['start'];
         $count = empty($parameters['count']) ? null : $parameters['count'];
 
-        //check for 2 params or nothing ?
-
         return new $this->queryNamespace($start, $count);
     }
 }

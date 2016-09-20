@@ -35,12 +35,9 @@ class AbstractAllQueryHandler implements QueryHandlerInterface
      */
     public function process(QueryInterface $query)
     {
-
         $entities = $this->manager->all(
             $query->getStart(),
-            $query->getCount(),
-            $query->getOrderBy(),
-            $query->getIsAsc()
+            $query->getCount()
         );
 
         return $entities;

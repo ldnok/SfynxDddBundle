@@ -25,59 +25,15 @@ abstract class AbstractAllQuery implements QueryInterface
     protected $count;
 
     /**
-     * @var
-     */
-    protected $orderBy;
-
-    /**
-     * @var
-     */
-    protected $isAsc;
-
-    /**
      * @param $start
      * @param $count
      * @param $orderBy
      * @param $isAsc
      */
-    public function __construct($start = null, $count = null, $orderBy = null, $isAsc = null)
+    public function __construct($start = null, $count = null)
     {
         $this->start = $start;
         $this->count = $count;
-        $this->orderBy = $orderBy;
-        $this->isAsc = $isAsc;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOrderBy()
-    {
-        return $this->orderBy;
-    }
-
-    /**
-     * @param mixed $orderBy
-     */
-    public function setOrderBy($orderBy)
-    {
-        $this->orderBy = $orderBy;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsAsc()
-    {
-        return $this->isAsc;
-    }
-
-    /**
-     * @param mixed $isAsc
-     */
-    public function setIsAsc($isAsc)
-    {
-        $this->isAsc = $isAsc;
     }
 
     /**

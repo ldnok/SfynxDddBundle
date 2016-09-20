@@ -32,7 +32,6 @@ abstract class AbstractOneRepository extends AbstractRepository
             ->from($this->_entityName, 'a')
             ->where('a.id = ?1')
             ->setParameter(1, $entityId);
-        $qb = $this->searchWithTenantId($_SERVER['HTTP_X_TENANT_ID'], $qb);
         $query = $qb->getQuery();
 
         $result = $query->getResult();
