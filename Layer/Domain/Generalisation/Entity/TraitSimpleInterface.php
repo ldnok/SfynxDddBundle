@@ -1,6 +1,6 @@
 <?php
 
-namespace Sfynx\DddBundle\Layer\Domain\Generalisation\Interfaces;
+namespace Sfynx\DddBundle\Layer\Domain\Generalisation\Entity;
 
 /**
  * FilmRepository interface

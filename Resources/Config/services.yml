@@ -35,28 +35,6 @@ services:
         - { name: kernel.event_listener, event: kernel.response, priority: 1 }
 
     #
-    # KERNEL EVENT REQUEST
-    #
-    project.dddcontext.listener.kernel.request.dynamic_database:
-        class: %project.dddcontext.listener.kernel.request.dynamic_database_orm.class%
-        arguments: [%database_type%, %database_multitenant_path_file%, @doctrine.dbal.default_connection]
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-    #
-    # DOCTRINE EVENT REQUEST
-    #
-    project.dddcontext.listener.doctrine.dynamic_table:
-        class: %project.dddcontext.listener.doctrine.dynamic_table.class%
-        arguments: [%database_type%, %database_multitenant_path_file%, @kernel]
-        tags:
-            - { name: doctrine.event_listener, event: loadClassMetadata }
-
-
-
-
-
-    #
     # response handler
     #
     project.dddcontext.response.handler:
