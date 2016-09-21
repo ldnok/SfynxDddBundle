@@ -1,6 +1,7 @@
 <?php
 
 namespace Sfynx\DddBundle\Layer\Infrastructure\Persistence\Generalisation\CouchDB;
+use DemoApiContext\Infrastructure\Persistence\Repository\Actor\CouchDB\views\AbstractDesignDocument;
 
 /**
  * Class AbstractRepository
@@ -23,14 +24,23 @@ abstract class AbstractRepository
     protected $_entityName;
 
     /**
-     * Initializes a new SaveRepository.
-     *
+     * @var AbstractDesignDocument
+     */
+    protected $designDocument;
+
+    /**
+     * @return mixed
+     */
+    abstract public function initDesignDocument();
+
+    /**
      * @param EntityManager  $dm  The EntityManager to use.
      */
     public function __construct($dm)
     {
         $this->_dm = $dm;
         $this->initEntityName();
+        $this->initDesignDocument();
     }
 
     public function getEntityName()

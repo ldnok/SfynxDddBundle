@@ -21,12 +21,12 @@ abstract class AbstractAllRepository extends AbstractRepository
         return $this->findAll($object->start, $object->count);
     }
 
-    protected function findAll($start, $count, $orderBy = null, $isAsc = null)
+    protected function findAll($start, $count)
     {
         $client = $this->_dm->getCouchDBClient();
 //        //other solution
 //        $data = $client->allDocs($count, null, null, $start);
-        $client->createDesignDocument('actors', new ActorDesignDocument());
+        $client->createDesignDocument('actors', $this->designDocument);
 
         $query = $this->_dm->createQuery("actors", "all_actors")
             ->setReduce(false)
