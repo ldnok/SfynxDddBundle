@@ -1,6 +1,6 @@
 <?php
 
-namespace DemoApiContext\Infrastructure\Persistence\Repository\Actor\CouchDB\views;
+namespace Sfynx\DddBundle\Layer\Infrastructure\Persistence\Generalisation\CouchDB\views;
 
 use Doctrine\CouchDB\View\DesignDocument;
 
