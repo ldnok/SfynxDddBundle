@@ -31,8 +31,8 @@ abstract class AbstractGetByIdsRepository extends AbstractRepository
 //        $data = $client->findDocuments($entityIds);
 
           //other solution but need to create document
-        $client->createDesignDocument('actors', $this->designDocument);
-        $query = $this->_dm->createQuery("actors", "by_id");
+        $client->createDesignDocument('entities', $this->designDocument);
+        $query = $this->_dm->createQuery("entities", "by_id");
         $query->setReduce(false);
         $query->setKeys($entityIds);
         $data = $query->execute();

@@ -26,9 +26,9 @@ abstract class AbstractAllRepository extends AbstractRepository
         $client = $this->_dm->getCouchDBClient();
 //        //other solution
 //        $data = $client->allDocs($count, null, null, $start);
-        $client->createDesignDocument('actors', $this->designDocument);
+        $client->createDesignDocument('entities', $this->designDocument);
 
-        $query = $this->_dm->createQuery("actors", "all_actors")
+        $query = $this->_dm->createQuery("entities", "all")
             ->setReduce(false)
             ->setSkip($start)
             ->setLimit($count);
